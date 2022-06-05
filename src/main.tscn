@@ -1,3 +1,236 @@
-[gd_scene format=2]
+[gd_scene load_steps=20 format=2]
 
-[node name="Node" type="Node"]
+[ext_resource path="res://src/fairy.gd" type="Script" id=1]
+[ext_resource path="res://src/box/box.tscn" type="PackedScene" id=2]
+[ext_resource path="res://src/box/shelf.tscn" type="PackedScene" id=3]
+[ext_resource path="res://assets/texture/counter.png" type="Texture" id=4]
+[ext_resource path="res://assets/texture/fairy.png" type="Texture" id=5]
+[ext_resource path="res://src/win_area.gd" type="Script" id=6]
+[ext_resource path="res://src/people/owner.tscn" type="PackedScene" id=7]
+[ext_resource path="res://assets/texture/background.png" type="Texture" id=8]
+[ext_resource path="res://src/client_spawner.gd" type="Script" id=9]
+[ext_resource path="res://src/people/client.tscn" type="PackedScene" id=10]
+[ext_resource path="res://src/client_despawner.gd" type="Script" id=11]
+
+[sub_resource type="CircleShape2D" id=3]
+
+[sub_resource type="Animation" id=4]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ 1 ]
+}
+
+[sub_resource type="Animation" id=7]
+resource_name = "accum"
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 1 ]
+}
+
+[sub_resource type="Animation" id=8]
+resource_name = "dash"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 0 ]
+}
+
+[sub_resource type="Animation" id=5]
+resource_name = "fly"
+length = 0.2
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 1,
+"values": [ 0, 1 ]
+}
+
+[sub_resource type="Animation" id=6]
+resource_name = "idle"
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 1,
+"values": [ 1 ]
+}
+
+[sub_resource type="RectangleShape2D" id=9]
+extents = Vector2( 1510.5, 63.5 )
+
+[sub_resource type="RectangleShape2D" id=10]
+extents = Vector2( 216.25, 642 )
+
+[node name="Node2D" type="Node2D"]
+
+[node name="shelf" parent="." instance=ExtResource( 3 )]
+position = Vector2( 322, 161 )
+
+[node name="shelf5" parent="." instance=ExtResource( 3 )]
+position = Vector2( 642, 313 )
+
+[node name="shelf6" parent="." instance=ExtResource( 3 )]
+position = Vector2( 0, 313 )
+
+[node name="shelf2" parent="." instance=ExtResource( 3 )]
+position = Vector2( 0, 309 )
+rotation = 1.57079
+scale = Vector2( 3, 1 )
+
+[node name="shelf3" parent="." instance=ExtResource( 3 )]
+position = Vector2( 642, 261 )
+rotation = 1.57079
+scale = Vector2( 3, 1 )
+
+[node name="shelf4" parent="." instance=ExtResource( 3 )]
+position = Vector2( 289, 0 )
+scale = Vector2( 3, 1 )
+
+[node name="box" parent="." instance=ExtResource( 2 )]
+position = Vector2( 325, 112 )
+can_sleep = false
+
+[node name="fairy" type="RigidBody2D" parent="."]
+position = Vector2( 324, 108 )
+collision_layer = 3
+can_sleep = false
+script = ExtResource( 1 )
+speed = 200.0
+jump_speed = 100.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="fairy"]
+shape = SubResource( 3 )
+
+[node name="Sprite" type="Sprite" parent="fairy"]
+texture = ExtResource( 5 )
+vframes = 2
+frame = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="fairy"]
+anims/RESET = SubResource( 4 )
+anims/accum = SubResource( 7 )
+anims/dash = SubResource( 8 )
+anims/fly = SubResource( 5 )
+anims/idle = SubResource( 6 )
+
+[node name="owner" parent="." instance=ExtResource( 7 )]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="counter" type="Sprite" parent="CanvasLayer"]
+position = Vector2( 321, 308 )
+texture = ExtResource( 4 )
+
+[node name="client" parent="CanvasLayer" instance=ExtResource( 10 )]
+position = Vector2( 784, 436 )
+target_x = -1000.0
+
+[node name="client_spawner" type="Node2D" parent="CanvasLayer"]
+position = Vector2( 324, 455 )
+script = ExtResource( 9 )
+client_scene = ExtResource( 10 )
+
+[node name="Position2D" type="Position2D" parent="CanvasLayer/client_spawner"]
+position = Vector2( -536, 6 )
+
+[node name="Position2D2" type="Position2D" parent="CanvasLayer/client_spawner"]
+position = Vector2( 598, -3 )
+
+[node name="Timer" type="Timer" parent="CanvasLayer/client_spawner"]
+wait_time = 10.0
+autostart = true
+
+[node name="Label" type="Label" parent="."]
+margin_left = 111.0
+margin_top = 190.0
+margin_right = 539.0
+margin_bottom = 255.0
+text = "Get off the shelf! use the arrow keys to move, 
+and hold and release space to do a charged dash.
+If the store owner sees your box move, it's game over!
+the box is opaque. so don't worry about your own movement
+inside it
+press R to restart"
+align = 1
+
+[node name="win_area" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource( 6 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="win_area"]
+position = Vector2( 344, 559 )
+shape = SubResource( 9 )
+
+[node name="win_text" type="Label" parent="win_area"]
+visible = false
+margin_left = 284.0
+margin_top = 247.0
+margin_right = 360.0
+margin_bottom = 261.0
+text = "YOU WIN!!!!"
+
+[node name="CanvasLayer2" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer2"]
+margin_right = 40.0
+margin_bottom = 40.0
+texture = ExtResource( 8 )
+
+[node name="client_despawner" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 4
+script = ExtResource( 11 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="client_despawner"]
+position = Vector2( -787, 365 )
+shape = SubResource( 10 )
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="client_despawner"]
+position = Vector2( 1242, 339 )
+shape = SubResource( 10 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2( 381, 245 )
+
+[connection signal="timeout" from="CanvasLayer/client_spawner/Timer" to="CanvasLayer/client_spawner" method="_on_Timer_timeout"]
+[connection signal="body_entered" from="win_area" to="win_area" method="_on_win_area_body_entered"]
+[connection signal="area_entered" from="client_despawner" to="client_despawner" method="_on_client_despawner_area_entered"]

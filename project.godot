@@ -75,7 +75,33 @@ _global_script_class_icons={
 [application]
 
 config/name="GetOffTheShelf"
+run/main_scene="res://src/main.tscn"
 config/icon="res://assets/texture/icon.png"
+
+[autoload]
+
+Global="*res://src/global/global.tscn"
+
+[display]
+
+window/size/width=640
+window/size/height=480
+window/stretch/mode="viewport"
+window/stretch/aspect="expand"
+
+[importer_defaults]
+
+texture={
+"flags/filter": false
+}
+
+[input]
+
+restart={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":82,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+ ]
+}
 
 [physics]
 
