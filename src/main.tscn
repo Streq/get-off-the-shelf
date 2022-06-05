@@ -201,10 +201,10 @@ shape = SubResource( 9 )
 
 [node name="win_text" type="Label" parent="win_area"]
 visible = false
-margin_left = 284.0
-margin_top = 247.0
-margin_right = 360.0
-margin_bottom = 261.0
+margin_left = 293.0
+margin_top = 308.0
+margin_right = 369.0
+margin_bottom = 322.0
 text = "YOU WIN!!!!"
 
 [node name="CanvasLayer2" type="CanvasLayer" parent="."]
