@@ -1,4 +1,4 @@
 # Godot-specific ignores
 exports/
-
-secrets.conf
+#github secrets
+secrets.sh
